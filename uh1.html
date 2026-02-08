@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Săn Lỗi AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .box {
+      background: white;
+      width: 90%;
+      max-width: 420px;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+    h1 {
+      color: #8e44ad;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #9b59b6;
+      color: white;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .result {
+      font-size: 18px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box" id="game">
+  <h1>🎮 Game đúng/sai </h1>
+  <p>Rèn luyện tư duy  – Toán 12</p>
+
+  <input type="text" id="name" placeholder="Nhập tên của bạn">
+  <button onclick="startGame()">🚀 Bắt đầu chơi</button>
+</div>
+
+<script>
+  let questions = [
+    {
+      q: "Đồ thị hàm số bậc 3 luôn có đúng 1 điểm uốn.",
+      correct: false
+    },
+    {
+      q: "Hàm số có cực trị thì đạo hàm tại điểm cực trị luôn bằng 0.",
+      correct: true
+    },
+    {
+      q: "Hàm số bậc nhất không có tiệm cận ngang.",
+      correct: false
+    }
+  ];
+
+  let index = 0;
+  let score = 0;
+  let player = "";
+
+  function startGame() {
+    player = document.getElementById("name").value;
+    if (player === "") {
+      alert("Nhập tên trước đã 😅");
+      return;
+    }
+    showQuestion();
+  }
+
+  function showQuestion() {
+    let q = questions[index];
+    document.getElementById("game").innerHTML = `
+      <h1>Câu ${index + 1}</h1>
+      <p>${q.q}</p>
+      <button onclick="answer(true)">✅ Đúng</button>
+      <button onclick="answer(false)">❌ Sai</button>
+    `;
+  }
+
+  function answer(choice) {
+    let correct = questions[index].correct;
+    let resultText = "";
+
+    if (choice === correct) {
+      score++;
+      resultText = "🎉 Chính xác!";
+    } else {
+      resultText = "❌ Sai rồi!";
+    }
+
+    document.getElementById("game").innerHTML = `
+      <h1>${resultText}</h1>
+      <p>Điểm hiện tại: ${score}</p>
+      <button onclick="next()">Tiếp tục</button>
+    `;
+  }
+
+  function next() {
+    index++;
+    if (index < questions.length) {
+      showQuestion();
+    } else {
+      endGame();
+    }
+  }
+
+  function endGame() {
+    document.getElementById("game").innerHTML = `
+      <h1>🏁 Hoàn thành!</h1>
+      <p>${player}, bạn được <b>${score}/${questions.length}</b> điểm</p>
+      <button onclick="location.reload()">🔁 Chơi lại</button>
+    `;
+  }
+</script>
+
+</body>
+</html>
